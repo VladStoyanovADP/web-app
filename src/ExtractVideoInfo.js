@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Create = () =>
+const ExtractVideoInfo = () =>
 {
     const [url, setUrl] = useState('');
     const [isPending, setIsPending] = useState(false)
@@ -28,7 +28,6 @@ const Create = () =>
 
     return (
         <div className="create">
-            <h2> Add a New Video </h2>
             <form onSubmit={handleSubmit}>
                 <label>Video URL:</label>
                 <input
@@ -44,4 +43,4 @@ const Create = () =>
     );
 }
 
-export default Create;
+export default ExtractVideoInfo;
