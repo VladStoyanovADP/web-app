@@ -2,7 +2,7 @@ const Navbar = () =>
 {
     return ( 
         <nav className="navbar">
-            <h1> The Dojo Blog </h1>
+            <h1> Sample Web App Name </h1>
         </nav>
     );
 }

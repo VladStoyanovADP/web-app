@@ -1,17 +1,15 @@
 import { useState } from "react";
-import { useHistory } from 'react-router-dom'
 
 const Create = () =>
 {
     const [url, setUrl] = useState('');
     const [isPending, setIsPending] = useState(false)
-    const history = useHistory()
 
     const handleSubmit = (e) =>
     {
         e.preventDefault()
         setIsPending(true)
-        fetch('https://yt.lemnoslife.com/videos?part=mostReplayed&id=mEh8piCgoqU', {
+        fetch(`https://yt.lemnoslife.com/videos?part=mostReplayed&id=${url.split("=")[1]}`, {
         })
         .then((response) =>
         {
@@ -23,9 +21,8 @@ const Create = () =>
         })
         .then((data) =>
         {
-            console.log('new video added', data)
+            console.log(data)
             setIsPending(false)
-            history.push('/')
         })
     }
 
