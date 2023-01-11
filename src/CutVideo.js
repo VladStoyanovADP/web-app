@@ -1,19 +1,28 @@
-const CutVideo = () => {
+import Axios from 'axios'
+import FileDownload from 'js-file-download'
 
-    const handleSubmit = (e) =>
+const CutVideo = () =>
+{
+
+    const handleDownload = (e) =>
     {
         e.preventDefault()
-        console.log("?")
+        Axios({
+            url: "http://172.24.144.5:4000",
+            method: "GET",
+            responseType: "blob"
+        }).then((res) =>
+        {
+            FileDownload(res.data, 'downloaded.png')
+        })
     }
 
-    return ( 
+    return (
         <div className="cutVideo">
-            <form onSubmit={handleSubmit}> 
-                <button> Cut Video </button>
-                {/* <iframe src='https://www.youtube.com/watch?v=xNRJwmlRBNU'> </iframe> */}
-            </form>
+            <button onClick={(e) => handleDownload(e)}> Download </button>
+            {/* <iframe src='https://www.youtube.com/watch?v=xNRJwmlRBNU'> </iframe> */}
         </div>
     );
 }
- 
+
 export default CutVideo;
