@@ -13,7 +13,7 @@ const CutVideo = () =>
             responseType: "blob"
         }).then((res) =>
         {
-            FileDownload(res.data, 'downloaded.png')
+            FileDownload(res.data, 'downloaded.mp4')
         })
     }
 
