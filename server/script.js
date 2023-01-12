@@ -10,7 +10,6 @@ app.use(cors())
 app.get('/', (req, res) =>
 {
     ffmpeg.setFfmpegPath(ffmpegPath)
-
     ffmpeg('./input.mp4')
         .setStartTime('00:00:03')
         .setDuration('10')

@@ -5,6 +5,7 @@ const ExtractVideoInfo = () =>
     const [url, setUrl] = useState('');
     const [isPending, setIsPending] = useState(false)
 
+
     const handleSubmit = (e) =>
     {
         e.preventDefault()
@@ -20,8 +21,18 @@ const ExtractVideoInfo = () =>
             return response.json()
         })
         .then((data) =>
-        {
-            console.log(data)
+        {   
+            let mostReplayed = 0
+            let heatMarkers = data.items[0].mostReplayed.heatMarkers
+            for (let i = 0; i < heatMarkers.length; i++)
+            {
+                if (heatMarkers[i].heatMarkerRenderer.heatMarkerIntensityScoreNormalized > 
+                    heatMarkers[mostReplayed].heatMarkerRenderer.heatMarkerIntensityScoreNormalized)
+                {
+                    mostReplayed = i
+                }
+            }
+            let startTime = heatMarkers[mostReplayed].heatMarkerRenderer.timeRangeStartMillis
             setIsPending(false)
         })
     }

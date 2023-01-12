@@ -8,7 +8,7 @@ const CutVideo = () =>
     {
         e.preventDefault()
         Axios({
-            url: "http://172.24.144.5:4000",
+            url: "http://172.28.197.201:4000",
             method: "GET",
             responseType: "blob"
         }).then((res) =>
@@ -20,7 +20,6 @@ const CutVideo = () =>
     return (
         <div className="cutVideo">
             <button onClick={(e) => handleDownload(e)}> Download </button>
-            {/* <iframe src='https://www.youtube.com/watch?v=xNRJwmlRBNU'> </iframe> */}
         </div>
     );
 }
