@@ -3,8 +3,8 @@ import { useState } from "react";
 const ExtractVideoInfo = () =>
 {
     const [url, setUrl] = useState('');
+    const [mostReplayed, setMostReplayed] = useState(0);
     const [isPending, setIsPending] = useState(false)
-
 
     const handleSubmit = (e) =>
     {
@@ -22,17 +22,27 @@ const ExtractVideoInfo = () =>
         })
         .then((data) =>
         {   
-            let mostReplayed = 0
+            let mostReplayedIndex = 0
             let heatMarkers = data.items[0].mostReplayed.heatMarkers
             for (let i = 0; i < heatMarkers.length; i++)
             {
                 if (heatMarkers[i].heatMarkerRenderer.heatMarkerIntensityScoreNormalized > 
-                    heatMarkers[mostReplayed].heatMarkerRenderer.heatMarkerIntensityScoreNormalized)
+                    heatMarkers[mostReplayedIndex].heatMarkerRenderer.heatMarkerIntensityScoreNormalized)
                 {
-                    mostReplayed = i
+                    mostReplayedIndex = i
                 }
             }
-            let startTime = heatMarkers[mostReplayed].heatMarkerRenderer.timeRangeStartMillis
+            setMostReplayed(heatMarkers[mostReplayedIndex].heatMarkerRenderer.timeRangeStartMillis)
+        })
+        .then(() =>
+        {
+            const body = { mostReplayed }
+            console.log(body)
+            fetch('http://localhost:8000/test', {
+                method: 'POST',
+                header: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            }).then(() => console.log('mostReplayed timestamp added'))
             setIsPending(false)
         })
     }
