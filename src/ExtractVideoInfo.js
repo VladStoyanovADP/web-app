@@ -40,7 +40,7 @@ const ExtractVideoInfo = () =>
             console.log(body)
             fetch('http://localhost:8000/test', {
                 method: 'POST',
-                header: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
             }).then(() => console.log('mostReplayed timestamp added'))
             setIsPending(false)
