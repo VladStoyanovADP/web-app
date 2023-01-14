@@ -5,6 +5,7 @@ const ExtractVideoInfo = () =>
     const [url, setUrl] = useState('');
     const [mostReplayed, setMostReplayed] = useState(0);
     const [isPending, setIsPending] = useState(false)
+    const [video, setVideo] = useState();
 
     const handleSubmit = (e) =>
     {
@@ -36,20 +37,35 @@ const ExtractVideoInfo = () =>
         })
         .then(() =>
         {
+            const fileInput = document.getElementById("myFileInput");
+            const file = fileInput.files[0];
+            console.log(file.name);
+            console.log(URL.createObjectURL(video))
             const body = { mostReplayed }
-            console.log(body)
+                        
             fetch('http://localhost:8000/test', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
-            }).then(() => console.log('mostReplayed timestamp added'))
+            })
             setIsPending(false)
         })
     }
 
+    const test = async () =>
+    {
+        ffmpeg.FS('writeFile', 'test.mp4', await fetchFile(video))
+    }
+
     return (
         <div className="create">
+            {video && <video
+                controls
+                width='250'
+                src={URL.createObjectURL(video)}>
+            </video>}
             <form onSubmit={handleSubmit}>
+                <input type="file" id="myFileInput" onChange={(e) => setVideo(e.target.files?.item(0))} accept="video/mp4"></input>
                 <label>Video URL:</label>
                 <input
                     type="text"

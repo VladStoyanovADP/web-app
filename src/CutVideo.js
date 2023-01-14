@@ -8,12 +8,17 @@ const CutVideo = () =>
     {
         e.preventDefault()
         Axios({
-            url: "http://172.28.205.204:4000",
+            url: "http://172.28.193.233:4000",
             method: "GET",
             responseType: "blob"
-        }).then((res) =>
+        })
+        .then((res) =>
         {
             FileDownload(res.data, 'downloaded.mp4')
+        })
+        .catch((err) =>
+        {
+            console.log(err)
         })
     }
 
