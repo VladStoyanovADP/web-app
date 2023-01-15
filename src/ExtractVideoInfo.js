@@ -12,36 +12,32 @@ const ExtractVideoInfo = () =>
     {
         e.preventDefault();
         setIsPending(true);
-        fetch(`https://yt.lemnoslife.com/videos?part=mostReplayed&id=${url.split("=")[1]}`, {})
-            .then(response => response.json())
-            .then(data =>
+        Axios.get(`https://yt.lemnoslife.com/videos?part=mostReplayed&id=${url.split("=")[1]}`).then(data =>
+        {
+            let mostReplayedIndex = 0;
+            let heatMarkers = data.data.items[0].mostReplayed.heatMarkers;
+            for (let i = 0; i < heatMarkers.length; i++)
             {
-                let mostReplayedIndex = 0;
-                let heatMarkers = data.items[0].mostReplayed.heatMarkers;
-                for (let i = 0; i < heatMarkers.length; i++)
-                {
-                    if (heatMarkers[i].heatMarkerRenderer.heatMarkerIntensityScoreNormalized >
-                        heatMarkers[mostReplayedIndex].heatMarkerRenderer.heatMarkerIntensityScoreNormalized) mostReplayedIndex = i
-                }
-                setMostReplayed(heatMarkers[mostReplayedIndex].heatMarkerRenderer.timeRangeStartMillis)
-                return mostReplayed
-            })
-            .then((mostReplayed) => Axios.post("http://localhost:8000/test", { mostReplayed }))
-            .then(() => 
+                if (heatMarkers[i].heatMarkerRenderer.heatMarkerIntensityScoreNormalized >
+                    heatMarkers[mostReplayedIndex].heatMarkerRenderer.heatMarkerIntensityScoreNormalized) mostReplayedIndex = i
+            }
+            setMostReplayed(heatMarkers[mostReplayedIndex].heatMarkerRenderer.timeRangeStartMillis)
+            return mostReplayed
+        })
+        .then(mostReplayed => Axios.post("http://localhost:8000/test", { mostReplayed }))
+        .then(() => 
+        {
+            Axios.get("http://172.28.201.60:4000", { responseType: "blob" }).then((res) => 
             {
-                Axios.get("http://172.28.201.60:4000", { responseType: "blob" })
-                    .then((res) => 
-                    {
-                        FileDownload(res.data, "downloaded.mp4")
-                        setIsPending(false);
-                    })
+                FileDownload(res.data, "downloaded.mp4")
+                setIsPending(false);
             })
+        })
     }
 
   return (
     <div className="create">
       <form onSubmit={handleSubmit}>
-        <input type="file" id="myFileInput" accept="video/mp4"></input>
         <label>Video URL:</label>
         <input
           type="text"
