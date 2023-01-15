@@ -1,8 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import NotFound from './NotFound';
 import Navbar from './Navbar'
 import ExtractVideoInfo from './ExtractVideoInfo';
-
 
 function App() {
   return (
@@ -14,10 +12,6 @@ function App() {
             
             <Route exact path="/">  
               <ExtractVideoInfo> </ExtractVideoInfo>
-            </Route>
-
-            <Route path="*">
-              <NotFound> </NotFound>
             </Route>
 
           </Switch>

@@ -5,7 +5,8 @@ const downloadVideo = (req, res) =>
 {
     axios.get('http://localhost:8000/test')
     .then(resp => resp.data[0].mostReplayed)
-    .then((startTime) => {
+    .then((startTime) => 
+    {
 
         startTime /= 1000
         startTime = Math.floor(startTime)
