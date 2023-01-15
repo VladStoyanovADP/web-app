@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import NotFound from './NotFound';
 import Navbar from './Navbar'
 import ExtractVideoInfo from './ExtractVideoInfo';
-import CutVideo from './CutVideo';
 
 
 function App() {
@@ -15,7 +14,6 @@ function App() {
             
             <Route exact path="/">  
               <ExtractVideoInfo> </ExtractVideoInfo>
-              <CutVideo> </CutVideo>
             </Route>
 
             <Route path="*">

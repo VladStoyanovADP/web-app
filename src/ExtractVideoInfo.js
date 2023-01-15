@@ -1,4 +1,6 @@
 import { useState } from "react";
+import FileDownload from "js-file-download";
+import Axios from "axios";
 
 const ExtractVideoInfo = () =>
 {
@@ -37,21 +39,18 @@ const ExtractVideoInfo = () =>
         .then(() =>
         {
             const body = { mostReplayed }
-
-            console.log(URL.createObjectURL(file))
-
-            const fileInput = document.getElementById("myFileInput");
-            const file = fileInput.files[0];
-            console.log(file);
-            const formData = new FormData();
-            formData.append("file", file);
-
+            
             fetch('http://localhost:8000/test', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
             })
 
+            Axios({
+                url: "http://172.28.201.60:4000",
+                method: "GET",
+                responseType: "blob",
+            }).then((res) => { FileDownload(res.data, "downloaded.mp4") })
             setIsPending(false)
         })
     }
