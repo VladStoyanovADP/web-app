@@ -14,8 +14,7 @@ const downloadVideo = (req, res) =>
         let seconds = startTime % 60
         if (seconds < 10) seconds = `0${seconds}`
 
-        const proc = new ffmpeg()
-        proc.addInput('./input.mp4')
+        ffmpeg('./input.mp4')
             .setStartTime(`00:${min}:${seconds}`)
             .setDuration('10')
             .output('video_out.mp4')

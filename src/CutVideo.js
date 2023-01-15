@@ -1,5 +1,6 @@
-import Axios from 'axios'
+
 import FileDownload from 'js-file-download'
+import Axios from 'axios'
 
 const CutVideo = () =>
 {
@@ -8,7 +9,7 @@ const CutVideo = () =>
     {
         e.preventDefault()
         Axios({
-            url: "http://172.28.193.233:4000",
+            url: "http://172.28.201.60:4000",
             method: "GET",
             responseType: "blob"
         })
