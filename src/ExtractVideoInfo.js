@@ -14,36 +14,36 @@ const ExtractVideoInfo = () =>
     setIsPending(true);
     Axios.get(`https://yt.lemnoslife.com/videos?part=mostReplayed&id=${url.split("=")[1]}`).then(data =>
     {
-      //   let mostReplayedIndex = 0;
-      //   let heatMarkers = data.data.items[0].mostReplayed.heatMarkers;
-      //   for (let i = 0; i < heatMarkers.length; i++)
-      //   {
-      //     if (heatMarkers[i].heatMarkerRenderer.heatMarkerIntensityScoreNormalized >
-      //     heatMarkers[mostReplayedIndex].heatMarkerRenderer.heatMarkerIntensityScoreNormalized) mostReplayedIndex = i
-      //   }
-      //   setMostReplayed(heatMarkers[mostReplayedIndex].heatMarkerRenderer.timeRangeStartMillis)
-      //   return mostReplayed
-      // })
-      // .then(mostReplayed => Axios.post("http://localhost:8000/test", { mostReplayed }))
-      // .then(() =>
-      // {
-      //   Axios.get("http://172.28.201.60:4000", { responseType: "blob" }).then(res =>
-      //   {
-      //     FileDownload(res.data, "downloaded.mp4")
-      //     setIsPending(false);
-      //   })
-      // })
-    })
-    .then(() =>
-    {
-      const fileInput = document.getElementById("myFileInput");
-      const file = fileInput.files[0];
-      const formData = new FormData();
-      formData.append("myFileInput", file);
-      fetch("http://172.28.201.60:4000", {
-        method: "POST",
-        body: formData,
-      });
+        let mostReplayedIndex = 0;
+        let heatMarkers = data.data.items[0].mostReplayed.heatMarkers;
+        for (let i = 0; i < heatMarkers.length; i++)
+        {
+          if (heatMarkers[i].heatMarkerRenderer.heatMarkerIntensityScoreNormalized >
+          heatMarkers[mostReplayedIndex].heatMarkerRenderer.heatMarkerIntensityScoreNormalized) mostReplayedIndex = i
+        }
+        setMostReplayed(heatMarkers[mostReplayedIndex].heatMarkerRenderer.timeRangeStartMillis)
+        return mostReplayed
+      })
+      .then(mostReplayed => Axios.post("http://localhost:8000/test", { mostReplayed }))
+      .then(() =>
+      {
+        const fileInput = document.getElementById("myFileInput");
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("myFileInput", file);
+        fetch("http://172.28.199.66:4000/upload", {
+          method: "POST",
+          body: formData,
+        });
+      })
+      .then(() =>
+      {
+        Axios.get("http://172.28.199.66:4000", { responseType: "blob" }).then(
+          (res) => {
+            FileDownload(res.data, "downloaded.mp4");
+            setIsPending(false);
+          }
+        );
     })
   }
 

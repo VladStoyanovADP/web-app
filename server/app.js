@@ -1,15 +1,39 @@
-const express = require('express')
-const cors = require('cors')
+const express = require("express");
+const cors = require("cors");
+const ffmpeg = require("fluent-ffmpeg");
+const axios = require("axios");
 
-const {
-    downloadVideo,
-} = require("./models");
+const { downloadVideo } = require("./models");
 
-const app = express()
+const app = express();
 
-app.use(cors())
+app.use(cors());
 
-// app.get('/', downloadVideo)
+let fileName = undefined
+
+app.get('/', (req, res) =>
+{
+  axios
+    .get("http://localhost:8000/test")
+    .then((resp) => resp.data[0].mostReplayed)
+    .then((startTime) => {
+      startTime /= 1000;
+      startTime = Math.floor(startTime);
+      let min = (startTime - (startTime % 60)) / 60;
+      if (min < 10) min = `0${min}`;
+      let seconds = startTime % 60;
+      if (seconds < 10) seconds = `0${seconds}`;
+
+      ffmpeg(`./uploads/${fileName}`)
+        .setStartTime(`00:${min}:${seconds}`)
+        .setDuration("10")
+        .output("video_out.mp4")
+        .on("end", () => {
+          res.download("./video_out.mp4");
+        })
+        .run();
+    });
+})
 
 const multer = require("multer");
 
@@ -18,24 +42,13 @@ const storage = multer.diskStorage({
     cb(null, "./uploads/");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+    fileName = file.originalname;
+    cb(null, file.originalname);
   },
 });
 
 const upload = multer({ storage: storage });
 
-app.post("/", upload.single('myFileInput'), function (req, res) {
-    console.log(req.body);
-    console.log(req.file)
-//   ffmpeg(req.file)
-//     .output("output.mp4")
-//     .on("end", function () {
-//       console.log("file has been converted succesfully");
-//     })
-//     .run();
-});
+app.post("/upload", upload.single("myFileInput"), function (req, res) { });
 
-app.listen(4000)
-
-
-
+app.listen(4000);
