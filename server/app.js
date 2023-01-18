@@ -25,7 +25,7 @@ app.get('/', (req, res) =>
       if (seconds < 10) seconds = `0${seconds}`;
 
       ffmpeg(`./uploads/${fileName}`)
-        .setStartTime(`00:${min}:${seconds}`)
+        .setStartTime(`00:00:04`)
         .setDuration("10")
         .output("video_out.mp4")
         .on("end", () => {
@@ -38,10 +38,8 @@ app.get('/', (req, res) =>
 const multer = require("multer");
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./uploads/");
-  },
-  filename: function (req, file, cb) {
+  destination: (req, file, cb) => cb(null, "./uploads/"),
+  filename: (req, file, cb) => {
     fileName = file.originalname;
     cb(null, file.originalname);
   },
@@ -49,6 +47,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.post("/upload", upload.single("myFileInput"), function (req, res) { });
+app.post("/upload", upload.single("myFileInput"), (req, res) => { });
 
 app.listen(4000);
